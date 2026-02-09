@@ -1,24 +1,29 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-	import { fetchCurrentCounter, incrementCounter } from "../utils/logic";
-    import "../styles/global.css";
-    let counter = $state(0);
-    onMount(async () => {
-        counter = await fetchCurrentCounter();
-        document.getElementById("counter")!.textContent = counter.toString();
-    });
-    const increaseCounter = async () => {
-        counter = await incrementCounter();
-        document.getElementById("counter")!.textContent = counter.toString();
-    };
+  import { onMount } from "svelte";
+  import { fetchCurrentCounter, incrementCounter } from "../utils/logic";
+
+  let count: number = 0;
+
+  onMount(async () => {
+    count = await fetchCurrentCounter();
+  });
+
+  async function handleIncrement() {
+    count = await incrementCounter();
+  }
 </script>
-<div class="header-container">
-    <h1>Welcome to Button Counter App</h1>
-</div>
-<div class="counter-container">
-    <p>Here is the current counter: </p>
-    <span id="counter">0</span>
-    <button onclick={increaseCounter}>Increase Counter</button>
-</div>
 
+<div class="counter-card">
+  <h1>Welcome to Button Counter App</h1>
 
+  <span class="count-value">{count}</span>
+
+  <button class="increment-btn" on:click={handleIncrement}>
+    Increase Counter
+  </button>
+
+  <div class="status">
+    <span class="dot"></span>
+    <span>Live from Turso Database</span>
+  </div>
+</div>
