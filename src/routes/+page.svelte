@@ -1,17 +1,23 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { fetchCurrentCounter, incrementCounter } from "../utils/logic";
+  import { useCounterPolling } from "../lib/useCounterPolling";
 
-  let count: number = 0;
+  let count = 0;
 
   onMount(async () => {
     count = await fetchCurrentCounter();
+
+    useCounterPolling(fetchCurrentCounter, v => {
+      if (v !== count) count = v;
+    });
   });
 
   async function handleIncrement() {
     count = await incrementCounter();
   }
 </script>
+
 
 <div class="counter-card">
   <h1>Welcome to Button Counter App</h1>
