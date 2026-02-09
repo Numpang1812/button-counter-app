@@ -1,5 +1,5 @@
 import { json } from '@sveltejs/kit';
-import { getCurrentCounter, incrementCounter, initTable } from '../../../database/db.server';
+import { getCurrentCounter, incrementCounter } from '../../../database/db.server';
 
 export async function GET() {
   const value = await getCurrentCounter();

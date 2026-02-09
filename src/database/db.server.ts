@@ -32,8 +32,3 @@ export async function getCurrentCounter(){
 export async function incrementCounter(){
     await db().execute(`UPDATE counter_table SET counter = counter + 1, last_updated = CURRENT_TIMESTAMP WHERE id = 1`);
 }
-
-( async () => {
-    await initTable();
-}
-)();
