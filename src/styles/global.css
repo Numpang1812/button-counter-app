@@ -44,8 +44,15 @@ body {
   color: #3b82f6;
 }
 
+.reset-btn {
+  background: #ef4444;
+}
+
 .increment-btn, .decrement-btn {
   background: #3b82f6;
+}
+
+.increment-btn, .decrement-btn, .reset-btn {
   color: white;
 
   border: none;
@@ -64,6 +71,11 @@ body {
 
 .increment-btn:hover, .decrement-btn:hover {
   background: #2563eb;
+  transform: translateY(-2px);
+}
+
+.reset-btn:hover {
+  background: #dc2626;
   transform: translateY(-2px);
 }
 
