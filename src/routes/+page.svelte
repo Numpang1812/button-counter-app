@@ -1,7 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { fetchCurrentCounter, incrementCounter } from "../utils/logic";
+  import { fetchCurrentCounter, incrementCounter, decrementCounter} from "../utils/logic";
   import { useCounterPolling } from "../lib/useCounterPolling";
+
 
   let count = 0;
 
@@ -16,6 +17,10 @@
   async function handleIncrement() {
     count = await incrementCounter();
   }
+
+  async function handleDecrement() {
+    count = await decrementCounter();
+  }
 </script>
 
 
@@ -27,7 +32,9 @@
   <button class="increment-btn" on:click={handleIncrement}>
     Increase Counter
   </button>
-
+  <button class="decrement-btn" on:click={handleDecrement} disabled={count === 0}>
+    Decrease Counter
+  </button>
   <div class="status">
     <span class="dot"></span>
     <span>Live from Turso Database</span>
