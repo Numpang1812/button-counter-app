@@ -3,8 +3,13 @@
   import { fetchCurrentCounter, incrementCounter, decrementCounter, resetCounter} from "../utils/logic";
   import { useCounterPolling } from "../lib/useCounterPolling";
 
-
+  // Initialize the counter and buttons
   let count = 0;
+  let incrementBtn: HTMLButtonElement | undefined;
+  let decrementBtn: HTMLButtonElement | undefined;
+  let resetBtn: HTMLButtonElement | undefined;
+
+  // Fetch Counter value from the Turso Database when the component mounts and set up polling to keep it updated in real-time.
 
   onMount(async () => {
     count = await fetchCurrentCounter();
@@ -13,6 +18,8 @@
       if (v !== count) count = v;
     });
   });
+
+  // Functions for incrementing, decrementing, and resetting the counter to 0.
 
   async function handleIncrement() {
     count = await incrementCounter();
@@ -25,22 +32,95 @@
   async function handleReset() {
     count = await resetCounter();
   }
-</script>
 
+  // Keyboard event handler for Spacebar (Increase Counter)
+
+  async function spaceBarHandler(event: KeyboardEvent) {
+    if (event.code === "Space") {
+      event.preventDefault();
+      applyKeyVisual(event);
+      await handleIncrement();
+    }
+  }
+
+   // Keyboard event handlers for Backspace (Decrease Counter)
+
+  async function backspaceHandler(event: KeyboardEvent) {
+    if (event.code === "Backspace") {
+      event.preventDefault();
+      applyKeyVisual(event);
+      await handleDecrement();
+    }
+  }
+
+  // Keyboard event handler for Zero Key (Reset Counter to 0)
+
+  async function zeroKeyHandler(event: KeyboardEvent) {
+    if (event.code === "Digit0") {
+      event.preventDefault();
+      applyKeyVisual(event);
+      await handleReset();
+    }
+  }
+
+  // Function to set Hover state to buttons even when clicking the keyboard keys
+
+  function setHoverSate(btn: HTMLButtonElement | undefined, active: boolean) {
+    if(!btn) return;
+    btn.classList.toggle("hover", active);
+  }
+
+  function applyKeyVisual(event: KeyboardEvent) {
+    if (event.code === "Space") {
+      setHoverSate(incrementBtn, true);
+    } else if (event.code === "Backspace") {
+      setHoverSate(decrementBtn, true);
+    } else if (event.code === "Digit0") {
+      setHoverSate(resetBtn, true);
+    }
+  }
+
+  function resetKeyVisual(event: KeyboardEvent) {
+    if (event.code === "Space") {
+      setHoverSate(incrementBtn, false);
+    } else if (event.code === "Backspace") {
+      setHoverSate(decrementBtn, false);
+    } else if (event.code === "Digit0") {
+      setHoverSate(resetBtn, false);
+    }
+  }
+
+  // Set up event listeners and remove them
+
+  onMount(() => {
+    window.addEventListener("keydown", spaceBarHandler);
+    window.addEventListener("keydown", backspaceHandler);
+    window.addEventListener("keydown", zeroKeyHandler);
+    window.addEventListener("keyup", resetKeyVisual);
+
+    return () => {
+      window.removeEventListener("keydown", spaceBarHandler);
+      window.removeEventListener("keydown", backspaceHandler);
+      window.removeEventListener("keydown", zeroKeyHandler);
+      window.removeEventListener("keyup", resetKeyVisual);
+    };
+  });
+
+</script>
 
 <div class="counter-card">
   <h1>Welcome to Button Counter App</h1>
 
   <span class="count-value">{count}</span>
 
-  <button class="increment-btn" on:click={handleIncrement}>
+  <button class="increment-btn" bind:this={incrementBtn} on:click={handleIncrement}>
     Increase Counter
   </button>
-  <button class="decrement-btn" on:click={handleDecrement} disabled={count === 0}>
+  <button class="decrement-btn" bind:this={decrementBtn} on:click={handleDecrement} disabled={count === 0}>
     Decrease Counter
   </button>
   
-  <button class="reset-btn" on:click={handleReset}>
+  <button class="reset-btn" bind:this={resetBtn} on:click={handleReset}>
     Reset
   </button>
   

@@ -69,12 +69,14 @@ body {
   transition: transform 0.2s, background 0.2s;
 }
 
-.increment-btn:hover, .decrement-btn:hover {
+.increment-btn:hover, .decrement-btn:hover,
+.increment-btn.hover, .decrement-btn.hover {
   background: #2563eb;
   transform: translateY(-2px);
 }
 
-.reset-btn:hover {
+.reset-btn:hover,
+.reset-btn.hover {
   background: #dc2626;
   transform: translateY(-2px);
 }
