@@ -35,3 +35,18 @@ export async function decrementCounter() {
   const data = await res.json();
   return data.counter as number;
 }
+
+export async function resetCounter() {
+  const res = await fetch("/api/counter", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ action: "reset" })
+  });
+
+  if (!res.ok) throw new Error("Failed to reset counter");
+
+  const data = await res.json();
+  return data.counter as number;
+}

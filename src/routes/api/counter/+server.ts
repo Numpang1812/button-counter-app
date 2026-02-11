@@ -2,7 +2,8 @@ import { json } from "@sveltejs/kit";
 import {
   getCurrentCounter,
   incrementCounter,
-  decrementCounter
+  decrementCounter,
+  resetCounter
 } from "../../../database/db.server";
 
 export async function GET() {
@@ -19,6 +20,10 @@ export async function POST({ request }) {
 
   if (action === "decrement") {
     await decrementCounter();
+  }
+
+  if (action === "reset") {
+    await resetCounter();
   }
 
   const value = await getCurrentCounter();

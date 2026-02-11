@@ -36,3 +36,7 @@ export async function incrementCounter(){
 export async function decrementCounter(){
     await db().execute(`UPDATE counter_table SET counter = counter - 1, last_updated = CURRENT_TIMESTAMP WHERE id = 1 AND counter > 0`);
 }
+
+export async function resetCounter(){
+    await db().execute(`UPDATE counter_table SET counter = 0, last_updated = CURRENT_TIMESTAMP WHERE id = 1`);
+}
