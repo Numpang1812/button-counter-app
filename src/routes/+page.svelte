@@ -2,6 +2,8 @@
   import { onMount } from "svelte";
   import { fetchCurrentCounter, incrementCounter, decrementCounter, resetCounter} from "../utils/logic";
   import { useCounterPolling } from "../lib/useCounterPolling";
+  import { lang } from "../lib/stores/lang";
+  import { t } from "../lib/stores/t";
 
   // Initialize the counter and buttons
   let count = 0;
@@ -18,6 +20,12 @@
       if (v !== count) count = v;
     });
   });
+
+  // Function for language switching
+
+  function toggleLang() {
+    lang.update((l) => (l === 'en' ? 'jp' : 'en'));
+  }
 
   // Functions for incrementing, decrementing, and resetting the counter to 0.
 
@@ -109,23 +117,35 @@
 </script>
 
 <div class="counter-card">
-  <h1>Welcome to Button Counter App</h1>
+  <button class="lang-switch" on:click={toggleLang}>
+  <span class="icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <circle cx="12" cy="12" r="10"></circle>
+      <path d="M2 12h20"></path>
+      <path d="M12 2a15 15 0 0 1 0 20"></path>
+      <path d="M12 2a15 15 0 0 0 0 20"></path>
+    </svg>
+  </span>
+
+  <span class="label">{$t.lang}</span>
+  </button>
+  <h1>{$t.greeting}</h1>
 
   <span class="count-value">{count}</span>
 
   <button class="increment-btn" bind:this={incrementBtn} on:click={handleIncrement}>
-    Increase Counter
+    {$t.incrementBtn}
   </button>
   <button class="decrement-btn" bind:this={decrementBtn} on:click={handleDecrement} disabled={count === 0}>
-    Decrease Counter
+    {$t.decrementBtn}
   </button>
   
   <button class="reset-btn" bind:this={resetBtn} on:click={handleReset}>
-    Reset
+    {$t.resetBtn}
   </button>
   
   <div class="status">
     <span class="dot"></span>
-    <span>Live from Turso Database</span>
+    <span>{$t.status}</span>
   </div>
 </div>
